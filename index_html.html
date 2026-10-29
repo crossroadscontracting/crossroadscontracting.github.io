@@ -6,7 +6,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
 <title>Crossroads · hand-off</title>
-<!-- Crossroads Contracting Sales Helper hand-off page. Owner: Nick Couture. Built 10/28/26 by Claude.
+<!-- Crossroads Contracting Sales Helper hand-off page. Owner: Nick Couture. Built 10/28/26 by Claude. v2 10/28: button hidden until 4 s.
      claude.ai's page frame blocks phone, text and email links, but a plain web link opens a new tab. The Sales Helper's
      Call / Text / Email buttons open this page; it hands the number or address to the phone's own app.
      The number rides after "#", which browsers never send to a server, so it never reaches GitHub. No tracking, no outside files. -->
@@ -15,7 +15,8 @@
   @media (prefers-color-scheme: dark) { :root { --bg: #161b1a; --fg: #e8ecea; --quiet: #9aa5a1; --btn: #2c7a96; } }
   body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); color: var(--fg); font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
   main { text-align: center; padding: 24px 16px; max-width: 420px; width: 100%; box-sizing: border-box; }
-  a.big { display: block; background: var(--btn); color: #fff; text-decoration: none; border-radius: 14px; padding: 22px 16px; font-size: 24px; font-weight: 600; margin: 18px 0 10px; }
+  a.big { display: inline-block; color: var(--btn); font-size: 17px; font-weight: 600; margin: 14px 0 6px; }
+  a.big[hidden] { display: none; }
   .to { font-size: 18px; word-break: break-all; -webkit-user-select: all; user-select: all; }
   .quiet { color: var(--quiet); font-size: 15px; line-height: 1.4; }
 </style>
@@ -23,7 +24,7 @@
 <body>
 <main>
   <p class="quiet" id="what">Opening…</p>
-  <a class="big" id="go" href="#">Tap to continue</a>
+  <a class="big" id="go" href="#" hidden>Tap to continue</a>
   <p class="to" id="to"></p>
   <p class="quiet">Crossroads Sales Helper. When you're done, come back to the Sales Helper and log how it went.</p>
 </main>
@@ -40,10 +41,12 @@
   try { target = decodeURIComponent(target); } catch (e) { }
   if (kind === "geo") to = "https://maps.apple.com/?q=" + encodeURIComponent(target);
   what.textContent = verb + " " + (label || target);
-  a.textContent = verb;
+  a.textContent = "Didn't open? Tap to " + verb.toLowerCase();
   a.href = to;
   show.textContent = label || target;
+  // The phone shows its own Call / Open prompt; the button stays hidden so it does not sit behind it (Nick 10/28), and appears only if nothing opened.
   setTimeout(function () { try { location.href = to; } catch (e) { } }, 300);
+  setTimeout(function () { a.hidden = false; }, 4000);
 })();
 </script>
 </body>
